@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f0">
+  <meta name="description" content="A short interactive exhibit about genetically modified organisms, DNA, and crop features.">
+  <title>Genetically Modified Organisms · GMO Lab</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="site-header">
+    <a class="brand" href="#overview" aria-label="GMO Lab home" data-go="overview">
+      <span class="brand-mark" aria-hidden="true">✳</span>
+      <span class="brand-copy"><strong>GMO Lab</strong><small>SCIENCE EXPLORER</small></span>
+    </a>
+    <nav class="primary-nav" aria-label="Main sections">
+      <button class="nav active" data-view="overview">Overview</button>
+      <button class="nav" data-view="lab">DNA & Crop Lab</button>
+      <button class="nav" data-view="examples">Examples</button>
+      <button class="nav" data-view="sources">Sources</button>
+    </nav>
+    <div class="header-actions">
+      <button class="button button-soft" id="exhibit-toggle" type="button" aria-pressed="false">Exhibition mode</button>
+      <button class="button button-quiet" id="reset" type="button" title="Reset the demo">Reset demo</button>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="view active" id="view-overview">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="status-dot"></span> GENETIC SCIENCE · INTERACTIVE LAB</span>
+          <h1>Genetically Modified<br><em>Organisms</em></h1>
+          <p>Choose a plant feature, see where it appears on a 3D DNA model, then explore its example effect in the Crop Lab.</p>
+          <button class="button button-primary button-large" data-go="lab">Explore the lab <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="hero-art" aria-hidden="true"><div class="hero-orbit"></div><span class="dna-emoji">🧬</span><span class="hero-chip chip-one">DNA → FEATURE</span><span class="hero-chip chip-two">SELECT · EXPLORE · COMPARE</span></div>
+      </div>
+      <section class="home-flow" aria-label="What the lab explores">
+        <div class="home-flow-heading"><div><span class="eyebrow">A BIG IDEA, MADE VISIBLE</span><h2>From DNA to a plant feature</h2></div><p>Three simple steps connect genetics to the crop model.</p></div>
+        <div class="home-flow-cards">
+          <article class="flow-card"><span class="flow-number">01</span><div><h3>Explore DNA</h3><p>Rotate the double helix and see its building blocks.</p></div></article>
+          <article class="flow-card"><span class="flow-number">02</span><div><h3>Choose a feature</h3><p>Select insect defense, water saving, or extra nutrition.</p></div></article>
+          <article class="flow-card"><span class="flow-number">03</span><div><h3>See the effect</h3><p>Adjust conditions and watch the example crop score respond.</p></div></article>
+        </div>
+      </section>
+      <aside class="science-note"><span aria-hidden="true">ⓘ</span><p><strong>One useful word</strong> A trait is a feature, like plant height. Genes and the environment can both affect it.</p></aside>
+      <section class="exhibition-summary" aria-labelledby="exhibition-summary-title">
+        <div class="exhibition-summary-heading"><span class="eyebrow">THE IDEA IN THREE PARTS</span><h2 id="exhibition-summary-title">From information to a feature</h2></div>
+        <div class="concept-steps">
+          <article><span>01 · DNA</span><p>The molecule that carries biological information.</p></article>
+          <article><span>02 · GENE</span><p>A section of DNA with instructions for a cell.</p></article>
+          <article><span>03 · TRAIT</span><p>A feature shaped by genes and growing conditions.</p></article>
+        </div>
+      </section>
+    </section>
+
+    <section class="view" id="view-lab">
+      <div class="page-heading lab-page-heading"><span class="eyebrow">THE INTERACTIVE DEMO</span><h1>DNA & Crop Lab</h1><p>Select a feature and adjust the conditions. The model, DNA marker, and results stay together.</p></div>
+      <div class="lab-upper-grid">
+        <article class="panel dna-panel lab-dna-panel">
+          <div class="panel-heading"><div><span class="eyebrow">STEP 1 · CHOOSE A FEATURE</span><h2>DNA’s twisted ladder</h2></div><span class="tag">3D MODEL</span></div>
+          <div id="dna-canvas" class="dna-canvas" aria-label="Interactive 3D DNA model with a marker for the selected feature"></div>
+          <p class="legend"><span class="legend-key key-teal">● A pairs with T</span><span class="legend-key key-amber">● C pairs with G</span><span class="legend-note">Simplified model</span></p>
+          <div class="trait-options" role="group" aria-label="Choose a plant feature">
+            <button type="button" class="trait-option" data-trait="resistance" aria-pressed="true"><span class="trait-symbol">✦</span><strong>Insect defense</strong><small>Protection from some insects</small></button>
+            <button type="button" class="trait-option" data-trait="tolerance" aria-pressed="false"><span class="trait-symbol">≈</span><strong>Water saving</strong><small>Growing with less water</small></button>
+            <button type="button" class="trait-option" data-trait="nutrition" aria-pressed="false"><span class="trait-symbol">✿</span><strong>Extra nutrition</strong><small>A nutrition score in this demo</small></button>
+          </div>
+          <p class="trait-status" id="dna-trait-result" role="status" aria-live="polite">Insect defense is selected. Its marker and example score are shown.</p>
+          <p class="model-caveat">The marker is a visual aid. Real DNA changes are more complex than adding a feature to a model.</p>
+        </article>
+
+        <article class="panel setup-panel crop-setup-panel">
+          <div class="panel-heading"><div><span class="eyebrow">STEP 2 · SET CONDITIONS</span><h2>Try a crop scenario</h2></div><span class="tag">LIVE MODEL</span></div>
+          <div class="active-feature"><span>Selected feature</span><strong id="activeTrait">Insect defense</strong></div>
+          <label for="crop">Choose a crop</label>
+          <select id="crop"><option value="maize">Maize · insect damage</option><option value="cotton">Cotton · insect damage</option><option value="rice">Rice · water shortage</option></select>
+          <div class="range-control"><label for="pest">Insect risk <output id="pestVal" for="pest">60%</output></label><input id="pest" type="range" min="0" max="100" value="60"></div>
+          <div class="range-control"><label for="water">Water available <output id="waterVal" for="water">70%</output></label><input id="water" type="range" min="0" max="100" value="70"></div>
+          <div class="range-control"><label for="eff">Trait effect <output id="effVal" for="eff">65%</output></label><input id="eff" type="range" min="0" max="100" value="65"></div>
+          <div class="compact-results">
+            <div class="metric-grid"><article class="metric-card"><span>WITHOUT</span><strong id="baseMetric">—</strong><small>Example score</small></article><article class="metric-card metric-emphasis"><span>WITH FEATURE</span><strong id="modMetric">—</strong><small>Example score</small></article><article class="metric-card"><span>CHANGE</span><strong id="diffMetric">—</strong><small>Points</small></article></div>
+            <div class="result-detail-grid">
+              <article class="chart-panel"><div class="panel-heading"><div><span class="eyebrow">COMPARE</span><h3>Crop scores</h3></div></div><div class="chart-wrap"><canvas id="chart" aria-label="Bar chart comparing crop scores without and with the selected feature"></canvas></div></article>
+              <article class="interpretation-panel"><span class="eyebrow">IN SIMPLE WORDS</span><h3 id="resultTitle">Change a setting to explore</h3><p id="resultText">The chart compares the same crop setup without and with the chosen feature.</p><p class="result-caveat">Example scores only · not real crop measurements</p></article>
+            </div>
+          </div>
+          <p class="helper-text">All three controls change the example score.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="view-examples">
+      <div class="page-heading evidence-page-heading"><span class="eyebrow">REAL-WORLD CONTEXT</span><h1>Crop Examples</h1><p>Different crops can be changed for different reasons. Here are a few real examples behind the ideas in the lab.</p></div>
+
+      <div class="evidence-grid real-examples-grid">
+        <article class="panel evidence-card real-example-card">
+          <div class="evidence-art maize-art" aria-hidden="true">🌽</div>
+          <span class="tag">INSECT DEFENSE</span>
+          <h2>Bt maize</h2>
+          <p>Some maize plants make a Bt protein that protects against particular insect pests, such as some caterpillars. It does not protect against every insect.</p>
+          <p class="example-takeaway"><strong>Simple idea:</strong> a feature can target a specific problem.</p>
+        </article>
+        <article class="panel evidence-card real-example-card">
+          <div class="evidence-art cotton-art" aria-hidden="true">☁️</div>
+          <span class="tag">INSECT DEFENSE</span>
+          <h2>Bt cotton</h2>
+          <p>Some cotton plants make Bt proteins that work against certain bollworm and budworm pests. Farmers also use ways to slow pests from becoming resistant.</p>
+          <p class="example-takeaway"><strong>Simple idea:</strong> useful traits still need good crop management.</p>
+        </article>
+        <article class="panel evidence-card real-example-card">
+          <div class="evidence-art rice-art" aria-hidden="true">🍚</div>
+          <span class="tag">EXTRA NUTRITION</span>
+          <h2>Golden Rice</h2>
+          <p>Golden Rice was developed to produce beta-carotene in the edible grain. The body can use beta-carotene to make vitamin A.</p>
+          <p class="example-takeaway"><strong>Simple idea:</strong> some crop features are designed to affect food nutrition.</p>
+        </article>
+      </div>
+
+      <div class="evidence-lower-grid">
+        <article class="panel model-explainer">
+          <span class="eyebrow">HOW TO READ THE LAB</span>
+          <h2>A learning model, not a field test</h2>
+          <p>The score is an invented 0–100 example. It combines the settings you choose with an assumed feature benefit, so you can see how conditions may change a result.</p>
+          <ul>
+            <li><strong>Insect risk</strong> changes the example insect-damage pressure.</li>
+            <li><strong>Water available</strong> changes the example water-stress pressure.</li>
+            <li><strong>Trait effect</strong> changes how strongly the chosen feature helps in this model.</li>
+          </ul>
+          <p class="model-boundary"><strong>Important:</strong> scores are not measured yields or nutrient levels. The DNA marker is a visual aid, not the location of a real gene.</p>
+        </article>
+        <article class="panel reading-prompts">
+          <span class="eyebrow">THINK LIKE A SCIENTIST</span>
+          <h2>Three useful questions</h2>
+          <ol>
+            <li>Which crop and which feature are being discussed?</li>
+            <li>Does the feature help with this specific challenge?</li>
+            <li>What conditions or management choices could change the result?</li>
+          </ol>
+          <p>These questions help separate a real crop example from the simplified score in the demo.</p>
+        </article>
+      </div>
+
+    </section>
+
+    <section class="view" id="view-sources">
+      <div class="page-heading evidence-page-heading"><span class="eyebrow">CHECK THE EVIDENCE</span><h1>Sources</h1><p>These science and government references support the DNA and crop examples in this exhibit.</p></div>
+      <section class="sources-section standalone-sources" aria-labelledby="sources-heading">
+        <div class="sources-heading"><div><span class="eyebrow">FURTHER READING</span><h2 id="sources-heading">Trusted references</h2></div><p>Each link opens the original source.</p></div>
+        <div class="sources-list">
+          <a class="source-link" href="https://www.epa.gov/regulation-biotechnology-under-tsca-and-fifra/are-bt-crops-safe" target="_blank" rel="noopener noreferrer"><span><strong>U.S. Environmental Protection Agency · Bt crops</strong><small>How Bt maize and cotton target particular insect pests.</small></span><b aria-hidden="true">↗</b></a>
+          <a class="source-link" href="https://www.epa.gov/regulation-biotechnology-under-tsca-and-fifra/insect-resistance-management-bt-plant-incorporated" target="_blank" rel="noopener noreferrer"><span><strong>U.S. Environmental Protection Agency · Resistance management</strong><small>Why crop management helps slow insect resistance.</small></span><b aria-hidden="true">↗</b></a>
+          <a class="source-link" href="https://news.irri.org/2019/09/compositional-analysis-shows-beta.html" target="_blank" rel="noopener noreferrer"><span><strong>International Rice Research Institute · Golden Rice</strong><small>Background on beta-carotene biofortified rice.</small></span><b aria-hidden="true">↗</b></a>
+          <a class="source-link" href="https://www.genome.gov/genetics-glossary/Deoxyribonucleic-Acid-DNA" target="_blank" rel="noopener noreferrer"><span><strong>National Human Genome Research Institute · DNA</strong><small>DNA, the double helix, and how base pairs match.</small></span><b aria-hidden="true">↗</b></a>
+          <a class="source-link" href="https://www.ers.usda.gov/data-products/adoption-of-genetically-engineered-crops-in-the-united-states/recent-trends-in-ge-adoption" target="_blank" rel="noopener noreferrer"><span><strong>USDA Economic Research Service · Crop examples</strong><small>Trends and background on genetically engineered crops.</small></span><b aria-hidden="true">↗</b></a>
+          <a class="source-link" href="https://nap.nationalacademies.org/resource/23395/GE-crops-report-brief.pdf" target="_blank" rel="noopener noreferrer"><span><strong>National Academies · Genetically Engineered Crops</strong><small>A broader review of evidence, benefits, and limits.</small></span><b aria-hidden="true">↗</b></a>
+        </div>
+        <p class="sources-note">External source links need an internet connection. The interactive lab itself runs locally once the project dependencies are installed.</p>
+      </section>
+    </section>
+  </main>
+  <footer class="site-footer"><span>GMO LAB · SCIENCE EXPLORER</span><span>Educational model · Scores are examples</span></footer>
+</div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
