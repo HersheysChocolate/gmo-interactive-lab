@@ -22,10 +22,55 @@ function calculate({crop,trait,pest,water,effectiveness}){
   return {baseline:Math.round(baseline),modified:Math.round(modified),difference:Math.round(modified-baseline)};
 }
 function readInput(){return {crop:$("crop").value,trait:selectedTrait,pest:+$("pest").value,water:+$("water").value,effectiveness:+$("eff").value};}
+function getTradeoffs({trait,pest,water,effectiveness}){
+  if(trait==="resistance"){
+    const benefit=pest<20
+      ?"Few insects in this example, so there is less damage for this feature to prevent."
+      :effectiveness<25
+        ?"At this setting, the model shows only a small drop in insect damage."
+        :"It may protect against some insects. The EPA says Bt maize or cotton can mean fewer chemical insecticides.";
+    const caution=effectiveness===0
+      ?"At zero, the model gives no protection. In real Bt crops, some pests can adapt and survive. A nearby non-Bt patch (a refuge) and pest checks help slow this."
+      :pest>=70
+        ?"Many insects in this setting make pest management important. Some pests can adapt and survive Bt; non-Bt refuge crops and pest checks help slow this."
+        :"Pests can adapt and survive Bt over time. A nearby patch of non-Bt crop (a refuge) and pest checks help slow this. The demo does not model that.";
+    return {benefit,caution};
+  }
+  if(trait==="tolerance"){
+    const benefit=water<35
+      ?effectiveness<30
+        ?"Water is scarce, but the model shows little help at this trait-effect setting."
+        :"Low water makes this feature more relevant in the model. USDA research found that drought responses differed among specific cotton and soybean varieties."
+      :effectiveness<25
+        ?"At this low setting, the model shows little help."
+        :water>70
+        ?"Water is plentiful here, so there is less water stress for this feature to help with."
+        :"A water-saving feature may matter more as water becomes scarce; real results vary by crop and variety.";
+    const caution=effectiveness<25
+      ?"At this setting, the model shows little help. Even drought-tolerant plants still need water."
+      :water<20
+        ?"Even drought-tolerant plants need water. A severe shortage can still limit growth."
+        :"This feature cannot replace water. Results depend on the plant type, soil, and season.";
+    return {benefit,caution};
+  }
+  const benefit=water<25
+    ?"Very low water reduces this feature's score effect in the model. Crops with added nutrients may improve diets that lack those nutrients, if people eat them."
+    :pest>75
+      ?"High insect risk lowers this feature's score effect in the model. Crops with added nutrients may help if people eat them and lack those nutrients."
+      :"Crops with added nutrients may improve diets that lack those nutrients, if people eat them.";
+  const caution=effectiveness<25
+    ?"This low setting adds little to the made-up score. The score cannot tell us how much nutrient is in a real crop."
+    :"The score is not a nutrient test. Real benefit depends on how much is eaten, how well the nutrient is absorbed, and how much remains after cooking or storage.";
+  return {benefit,caution};
+}
 function run(){
   const input=readInput();
   $("pestVal").textContent=input.pest+"%";$("waterVal").textContent=input.water+"%";$("effVal").textContent=input.effectiveness+"%";
   const r=calculate(input);
+  const tradeoffs=getTradeoffs(input);
+  $("tradeoffScenario").textContent=`For ${cropNames[input.crop]}`;
+  $("tradeoffBenefit").textContent=tradeoffs.benefit;
+  $("tradeoffCaution").textContent=tradeoffs.caution;
   $("baseMetric").textContent=r.baseline;$("modMetric").textContent=r.modified;$("diffMetric").textContent="+"+r.difference;
   chart.data.datasets[0].data=[r.baseline,r.modified];chart.update();
   if(input.trait==="nutrition"){
