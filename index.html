@@ -77,9 +77,11 @@
           <div class="active-feature"><span>Selected feature</span><strong id="activeTrait">Insect defense</strong></div>
           <label for="crop">Choose a crop</label>
           <select id="crop"><option value="maize">Maize · insect damage</option><option value="cotton">Cotton · insect damage</option><option value="rice">Rice · water shortage</option></select>
-          <div class="range-control"><label for="pest">Insect risk <output id="pestVal" for="pest">60%</output></label><input id="pest" type="range" min="0" max="100" value="60"></div>
-          <div class="range-control"><label for="water">Water available <output id="waterVal" for="water">70%</output></label><input id="water" type="range" min="0" max="100" value="70"></div>
-          <div class="range-control"><label for="eff">Trait effect <output id="effVal" for="eff">65%</output></label><input id="eff" type="range" min="0" max="100" value="65"></div>
+          <div class="scenario-controls" role="group" aria-label="Scenario conditions">
+            <div class="range-control"><label for="pest">Insect risk <output id="pestVal" for="pest">60%</output></label><input id="pest" type="range" min="0" max="100" value="60"></div>
+            <div class="range-control"><label for="water">Water available <output id="waterVal" for="water">70%</output></label><input id="water" type="range" min="0" max="100" value="70"></div>
+            <div class="range-control"><label for="eff">Trait effect <output id="effVal" for="eff">65%</output></label><input id="eff" type="range" min="0" max="100" value="65"></div>
+          </div>
           <div class="compact-results">
             <div class="metric-grid"><article class="metric-card"><span>WITHOUT</span><strong id="baseMetric">—</strong><small>Example score</small></article><article class="metric-card metric-emphasis"><span>WITH FEATURE</span><strong id="modMetric">—</strong><small>Example score</small></article><article class="metric-card"><span>CHANGE</span><strong id="diffMetric">—</strong><small>Points</small></article></div>
             <div class="result-detail-grid">
@@ -92,10 +94,8 @@
                 <article class="tradeoff-card"><h4>Possible benefit</h4><p id="tradeoffBenefit">Choose a feature to explore what it may help with.</p></article>
                 <article class="tradeoff-card tradeoff-caution"><h4>Possible downside</h4><p id="tradeoffCaution">Every feature has limits. Check the research examples on the Sources page.</p></article>
               </div>
-              <p class="tradeoff-note">These are research-backed examples, not predictions from the made-up score.</p>
             </section>
           </div>
-          <p class="helper-text">All three controls change the example score.</p>
         </article>
       </div>
     </section>
